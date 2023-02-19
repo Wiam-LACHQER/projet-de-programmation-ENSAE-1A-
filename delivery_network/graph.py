@@ -58,23 +58,23 @@ class Graph:
         self.nb_edges += 1
         if node1 not in self.nodes and node2 in self.nodes:
               self.nodes.append(node1)
-              self.graph[node2]+=[node1]
-              self.graph[node1]=[node2]
+              self.graph[node2]+=[(node1,power_min,dist)]
+              self.graph[node1]=[(node2,power_min,dist)]
               self.nb_nodes +=1
         elif node2 not in self.nodes and node1 in self.nodes:
               self.nodes.append(node2)
-              self.graph[node1]+=[node2]
-              self.graph[node2]=[node1]
+              self.graph[node1]+=[(node2;power_min,dist)]
+              self.graph[node2]=[(node1,power_min,dist)]
               self.nb_nodes +=1
         elif node2 not in self.nodes and node1 not in self.nodes:
               self.nodes.append(node1)
               self.nodes.append(node2)
-              self.graph[node2]=[node1]
-              self.graph[node1]=[node2]
+              self.graph[node2]=[(node1,power_min,dist)]
+              self.graph[node1]=[(node2,power_min,dist)]
               self.nb_nodes +=2
         else:
-              self.graph[node1]+=[node2]
-              self.graph[node2]+=[node1] 
+              self.graph[node1]+=[(node2,power_min,dist)]
+              self.graph[node2]+=[(node1,power_min,dist)] 
         return(self.graph)
     
 
@@ -122,21 +122,26 @@ def graph_from_file(filename):
     """
 
     fichier = open (filename, "r")
-    fichier.read()
+    f=fichier.read()
     graph=Graph
-    L=fichier.split("\n")
+    L=f.split("\n")
+    print(L)
+    R=[]
     for elem in L: 
-        elem = elem.split(" ")
-        elem = [int(i) for i in elem]
+        T = elem.split(" ")
+        Z = [int(i) for i in T]
+        R.append(Z)
+        
+    print(R)
 
-    graph.nb_nodes = L[0][0]
-    graph.nb_edges = L[0][1]
-    graph.nodes=[i for i in range(1,graph.nb_nodes)]
-    for i in range(1,len(L)):
-        node1=L[i][0]
-        node2=L[i][1]
-        power_min=L[i][2]
-        graph.add_edge(graph, node1, node2, power_min, dist=1)
+    graph.nb_nodes = R[0][0]
+    graph.nb_edges = R[0][1]
+    graph.nodes=[i for i in range(1,nb_nodes+1)]
+    for i in range(1,len(R)):
+        node1=R[i][0]
+        node2=R[i][1]
+        power_min=R[i][2]
+        graph.add_edge(node1, node2, power_min, dist=1)
 
 
     fichier.close()
