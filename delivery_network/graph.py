@@ -73,8 +73,8 @@ class Graph:
               self.graph[node1]=[node2]
               self.nb_nodes +=2
         else:
-              self.graph[node1]+=[node2]
-              self.graph[node2]+=[node1] 
+              self.graph[node1].append(node2)
+              self.graph[node2].append(node1) 
         return(self.graph)
     
 
@@ -123,7 +123,7 @@ def graph_from_file(filename):
 
     fichier = open (filename, "r")
     f=fichier.read()
-    graph=Graph
+    graph=Graph([]) 
     L=f.split("\n")
     print(L)
     R=[]
@@ -134,16 +134,14 @@ def graph_from_file(filename):
         
     print(R)
 
-    nb_nodes = R[0][0]
-    nb_edges = R[0][1]
-    nodes=[i for i in range(1,nb_nodes)]
+    graph.nb_nodes = R[0][0]
+    graph.nb_edges = R[0][1]
+    """graph.nodes=[i for i in range(1,graph.nb_nodes+1)]"""
     print(graph)
     for i in range(1,len(R)):
         node1=R[i][0]
         node2=R[i][1]
         power_min=R[i][2]
-        graph.add_edge(graph,node1, node2, power_min, dist=1)
-
-
+        graph.add_edge(node1, node2, power_min, dist=1)
     fichier.close()
     return graph
