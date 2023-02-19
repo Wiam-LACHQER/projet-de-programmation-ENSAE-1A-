@@ -58,11 +58,13 @@ class Graph:
         self.nb_edges += 1
         if node1 not in self.nodes and node2 in self.nodes:
               self.nodes.append(node1)
-              self.graph[node2]=[node1]+self.graph[node2]
+              self.graph[node2]+=[node1]
+              self.graph[node1]=[node2]
               self.nb_nodes +=1
         elif node2 not in self.nodes and node1 in self.nodes:
               self.nodes.append(node2)
-              self.graph[node1]=[node2]+self.graph[node1]
+              self.graph[node1]+=[node2]
+              self.graph[node2]=[node1]
               self.nb_nodes +=1
         elif node2 not in self.nodes and node1 not in self.nodes:
               self.nodes.append(node1)
@@ -70,6 +72,9 @@ class Graph:
               self.graph[node2]=[node1]
               self.graph[node1]=[node2]
               self.nb_nodes +=2
+        else:
+              self.graph[node1]+=[node2]
+              self.graph[node2]+=[node1] 
         return(self.graph)
     
 
