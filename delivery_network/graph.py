@@ -29,7 +29,6 @@ class Graph:
         self.nb_nodes = len(nodes)
         self.nb_edges = 0
     
-    # Wahed salamou3alaykoum, m3akoum l kolonel andrex scotzzz, larmi du maroc 
 
     def __str__(self):
         """Prints the graph as a list of neighbors for each node (one per line)"""
@@ -116,4 +115,24 @@ def graph_from_file(filename):
     G: Graph
         An object of the class Graph with the graph from file_name.
     """
-    raise NotImplementedError
+
+    fichier = open (filename, "r")
+    fichier.read()
+    graph=Graph
+    L=fichier.split("\n")
+    for elem in L: 
+        elem = elem.split(" ")
+        elem = [int(i) for i in elem]
+
+    self.nb_nodes = L[0][0]
+    self.nb_edges = L[0][1]
+    self.nodes=[i for i in range(1,nb_nodes)]
+    for i in range(1,len(L)):
+        nodes1=L[i][0]
+        nodes2=L[i][1]
+        power_min=L[i][2]
+        graph.add_edge(self, node1, node2, power_min, dist=1)
+
+
+    fichier.close()
+    return graph
