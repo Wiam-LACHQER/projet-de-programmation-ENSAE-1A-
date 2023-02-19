@@ -122,21 +122,27 @@ def graph_from_file(filename):
     """
 
     fichier = open (filename, "r")
-    fichier.read()
+    f=fichier.read()
     graph=Graph
-    L=fichier.split("\n")
+    L=f.split("\n")
+    print(L)
+    R=[]
     for elem in L: 
-        elem = elem.split(" ")
-        elem = [int(i) for i in elem]
+        T = elem.split(" ")
+        Z = [int(i) for i in T]
+        R.append(Z)
+        
+    print(R)
 
-    graph.nb_nodes = L[0][0]
-    graph.nb_edges = L[0][1]
-    graph.nodes=[i for i in range(1,graph.nb_nodes)]
-    for i in range(1,len(L)):
-        node1=L[i][0]
-        node2=L[i][1]
-        power_min=L[i][2]
-        graph.add_edge(graph, node1, node2, power_min, dist=1)
+    nb_nodes = R[0][0]
+    nb_edges = R[0][1]
+    nodes=[i for i in range(1,nb_nodes)]
+    print(graph)
+    for i in range(1,len(R)):
+        node1=R[i][0]
+        node2=R[i][1]
+        power_min=R[i][2]
+        graph.add_edge(graph,node1, node2, power_min, dist=1)
 
 
     fichier.close()
