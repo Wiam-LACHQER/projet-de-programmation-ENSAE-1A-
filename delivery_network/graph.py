@@ -63,7 +63,7 @@ class Graph:
               self.nb_nodes +=1
         elif node2 not in self.nodes and node1 in self.nodes:
               self.nodes.append(node2)
-              self.graph[node1]+=[(node2;power_min,dist)]
+              self.graph[node1]+=[(node2,power_min,dist)]
               self.graph[node2]=[(node1,power_min,dist)]
               self.nb_nodes +=1
         elif node2 not in self.nodes and node1 not in self.nodes:
@@ -73,8 +73,8 @@ class Graph:
               self.graph[node1]=[(node2,power_min,dist)]
               self.nb_nodes +=2
         else:
-              self.graph[node1]+=[node2]
-              self.graph[node2]+=[node1] 
+              self.graph[node1]+=[(node2,power_min,dist)]
+              self.graph[node2]+=[(node1,power_min,dist)] 
         return(self.graph)
     
 
