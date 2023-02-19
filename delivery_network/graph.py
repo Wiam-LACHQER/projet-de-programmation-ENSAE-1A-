@@ -29,6 +29,7 @@ class Graph:
         self.nb_nodes = len(nodes)
         self.nb_edges = 0
     
+    # Wahed salamou3alaykoum, m3akoum l kolonel andrex scotzzz, larmi du maroc 
 
     def __str__(self):
         """Prints the graph as a list of neighbors for each node (one per line)"""
