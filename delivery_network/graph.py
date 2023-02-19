@@ -129,14 +129,14 @@ def graph_from_file(filename):
         elem = elem.split(" ")
         elem = [int(i) for i in elem]
 
-    self.nb_nodes = L[0][0]
-    self.nb_edges = L[0][1]
-    self.nodes=[i for i in range(1,nb_nodes)]
+    graph.nb_nodes = L[0][0]
+    graph.nb_edges = L[0][1]
+    graph.nodes=[i for i in range(1,graph.nb_nodes)]
     for i in range(1,len(L)):
-        nodes1=L[i][0]
-        nodes2=L[i][1]
+        node1=L[i][0]
+        node2=L[i][1]
         power_min=L[i][2]
-        graph.add_edge(self, node1, node2, power_min, dist=1)
+        graph.add_edge(graph, node1, node2, power_min, dist=1)
 
 
     fichier.close()
