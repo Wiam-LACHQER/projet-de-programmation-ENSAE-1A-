@@ -136,7 +136,7 @@ def graph_from_file(filename):
     nb_nodes = Entiers[0][0]
     nb_edges = Entiers[0][1]
     nodes=[i for i in range(1,nb_nodes+1)]
-    for i in range(1,len(R)):
+    for i in range(1,len(Entiers)):
         node1=Entiers[i][0]
         node2=Entiers[i][1]
         power_min=Entiers[i][2]
