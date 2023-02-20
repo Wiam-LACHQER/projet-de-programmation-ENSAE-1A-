@@ -9,3 +9,6 @@ print(g)
 
 g.add_edge("Paris", "Palaiseau", 4, 20)
 print(g) # affichage du graphe
+
+print(g.connected_components())
+print(g.connected_components_set())

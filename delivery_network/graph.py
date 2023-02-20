@@ -81,9 +81,28 @@ class Graph:
     def get_path_with_power(self, src, dest, power):
         raise NotImplementedError
     
-
+    """La fonction explorer permet de récupérer la composante de graphe associée au noeud fourni en parametre"""
+    def explorer(self,node,compenent=[]):
+        compenent.append(node)
+        for neighbor in self.graph[node]:
+            if neighbor[0] not in compenent:
+                compenent=self.explorer(neighbor[0],compenent)
+        return compenent
+    
+    """Cette fonction permet de récupérer une liste de listes, chacune représente une composante du graphe"""
     def connected_components(self):
-        raise NotImplementedError
+        nodes1=self.nodes
+        compenents=[]
+        while nodes1!=[]:
+            compenent=self.explorer(nodes1[0],[])
+            print(compenent) 
+            """print sert seulement à visualiser les listes intermédiaires"""
+            for elem in compenent:
+                nodes1.remove(elem)
+            print(nodes1) 
+            """print sert seulement à visualiser les listes intermédiaires"""
+            compenents.append(compenent)
+        return compenents
 
 
     def connected_components_set(self):
