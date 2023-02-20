@@ -142,7 +142,7 @@ def graph_from_file(filename):
         node1=R[i][0]
         node2=R[i][1]
         power_min=R[i][2]
-        graph.add_edge(graph,node1, node2, power_min, dist=1)
+        graph.add_edge(node1, node2, power_min, dist=1)
 
 
     fichier.close()
