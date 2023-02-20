@@ -124,24 +124,22 @@ def graph_from_file(filename):
     fichier = open (filename, "r")
     f=fichier.read()
     graph=Graph([]) 
-    L=f.split("\n")
-    print(L)
-    R=[]
-    for elem in L: 
+    """Lignes est la liste des lignes du fichier"""
+    Lignes=f.split("\n")
+    """Entiers est une liste de listes des entiers de chaque ligne"""
+    Entiers=[]
+    for elem in Lignes: 
         T = elem.split(" ")
         Z = [int(i) for i in T]
-        R.append(Z)
-        
-    print(R)
+        Entiers.append(Z)
 
-    nb_nodes = R[0][0]
-    nb_edges = R[0][1]
+    nb_nodes = Entiers[0][0]
+    nb_edges = Entiers[0][1]
     nodes=[i for i in range(1,nb_nodes+1)]
-    print(graph)
     for i in range(1,len(R)):
-        node1=R[i][0]
-        node2=R[i][1]
-        power_min=R[i][2]
+        node1=Entiers[i][0]
+        node2=Entiers[i][1]
+        power_min=Entiers[i][2]
         graph.add_edge(node1, node2, power_min, dist=1)
 
 
