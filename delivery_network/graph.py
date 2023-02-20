@@ -136,7 +136,7 @@ def graph_from_file(filename):
 
     nb_nodes = R[0][0]
     nb_edges = R[0][1]
-    nodes=[i for i in range(1,nb_nodes)]
+    nodes=[i for i in range(1,nb_nodes+1)]
     print(graph)
     for i in range(1,len(R)):
         node1=R[i][0]
