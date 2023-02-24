@@ -79,8 +79,29 @@ class Graph:
     
 
     def get_path_with_power(self, src, dest, power):
-        raise NotImplementedError
-    
+        if src==dest:
+            return [[src]]
+        elif self.graph[src]==[] and src!=dest:
+            return None
+        trajet_possibles=[]
+        source=src
+        for neighbor in self.graph[src]:
+            if self.graph[neighbor[0]][0][0]!=source:
+                p=neighbor[1]
+                power=power-p
+                """self.graph[neighbor[0]].remove((src,neighbor[1],neighbor[2]))"""
+                print(neighbor)
+                
+                print(source)
+                if self.get_path_with_power(src, dest, power)!=None  and power>=0:
+                    trajet=self.get_path_with_power(src, dest, power)
+                for i in range (len(trajet)):
+                    trajet_possibles.append([source]+trajet[i])
+                    print(trajet_possibles)
+            source=src
+            src= neighbor[0]
+        return trajet_possibles
+
     """La fonction explorer permet de récupérer la composante de graphe associée au noeud fourni en parametre"""
     def explorer(self,node,compenent=[]):
         compenent.append(node)
@@ -95,11 +116,11 @@ class Graph:
         compenents=[]
         while nodes1!=[]:
             compenent=self.explorer(nodes1[0],[])
-            print(compenent) 
+            """print(compenent) """
             """print sert seulement à visualiser les listes intermédiaires"""
             for elem in compenent:
-                nodes1.remove(elem)
-            print(nodes1) 
+                nodes1.remove(elem) 
+            """print(nodes1) """
             """print sert seulement à visualiser les listes intermédiaires"""
             compenents.append(compenent)
         return compenents
@@ -110,13 +131,13 @@ class Graph:
         The result should be a set of frozensets (one per component), 
         For instance, for network01.in: {frozenset({1, 2, 3}), frozenset({4, 5, 6, 7})}
         """
-        return set(map(frozenset, self.connected_components()))
+        return set(map(frozenset,self.connected_components()))
     
     def min_power(self, src, dest):
         """
         Should return path, min_power. 
         """
-        
+        raise NotImplementedError
 
 
 def graph_from_file(filename):
@@ -160,7 +181,10 @@ def graph_from_file(filename):
         node2=Entiers[i][1]
         power_min=Entiers[i][2]
         graph.add_edge(node1, node2, power_min, dist=1)
-
+    """Probleme des points isolés, ils ne sont pas affichés ici!!!"""
+    for j in nodes:
+        if j not in graph.graph.keys():
+            graph.graph[j]=[]
 
     fichier.close()
     return graph
