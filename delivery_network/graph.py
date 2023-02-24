@@ -116,7 +116,7 @@ class Graph:
         """
         Should return path, min_power. 
         """
-        raise NotImplementedError
+        
 
 
 def graph_from_file(filename):
