@@ -1,3 +1,4 @@
+import numpy
 class Graph:
     """
     A class representing graphs as adjacency lists and implementing various algorithms on the graphs. Graphs in the class are not oriented. 
@@ -77,29 +78,42 @@ class Graph:
               self.graph[node2]+=[(node1,power_min,dist)] 
         return(self.graph)
     
-
-    def get_path_with_power(self, src, dest, power):
+    def trajets (self,src,dest,power):
+        for compenent in self.connected_components():
+            if src in compenent:
+                if dest not in compenent:
+                    return None
         if src==dest:
             return [[src]]
-        elif self.graph[src]==[] and src!=dest:
+        elif (self.graph[src]==[] and src!=dest) or power<=0:
             return None
-        trajet_possibles=[]
-        source=src
-        for neighbor in self.graph[src]:
+        trajets_possibles=[]
+        for i in range(len(self.graph[src])):
+            neighbor=self.graph[src][i]
             p=neighbor[1]
             power=power-p
+            """print(power)
             print(neighbor[0])
             print(self.graph[neighbor[0]])
-            print((src,neighbor[1],neighbor[2]))
-            self.graph[neighbor[0]].remove((src,neighbor[1],neighbor[2]))
-            if self.get_path_with_power(neighbor[0], dest, power)!=None  and power>=0:
-                trajet=self.get_path_with_power(neighbor[0], dest, power)
-            for i in range (len(trajet)):
-                trajet_possibles.append([src]+trajet[i])
-                print(trajet_possibles)
-        return trajet_possibles
+            print((src,neighbor[1],neighbor[2]))"""
+            if (src,neighbor[1],neighbor[2]) in self.graph[neighbor[0]]:
+                self.graph[neighbor[0]].remove((src,neighbor[1],neighbor[2]))           
+            if self.trajets(neighbor[0], dest, power)!=None:
+                trajet=self.trajets(neighbor[0], dest, power)
+                for i in range (len(trajet)):
+                    trajets_possibles.append([src]+trajet[i])
+                    """print(trajets_possibles)"""
+        return trajets_possibles
+    
+    def get_path_with_power(self, src, dest, power):
+        if self.trajets(src,dest,power)==None or self.trajets(src,dest,power)==[]:
+            print("Ce trajet est impossible")
+        else:
+            print ("Le trajet", (self.trajets(src,dest,power))[0],"est possible")
 
+    
     """La fonction explorer permet de récupérer la composante de graphe associée au noeud fourni en parametre"""
+    
     def explorer(self,node,compenent=[]):
         compenent.append(node)
         for neighbor in self.graph[node]:
