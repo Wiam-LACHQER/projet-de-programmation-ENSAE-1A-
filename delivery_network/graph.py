@@ -78,7 +78,7 @@ class Graph:
         return(self.graph)
     
 
-    """ def get_path_with_power(self, src, dest, power):
+    def get_path_with_power(self, src, dest, power):
         if src==dest:
             return [[src]]
         elif self.graph[src]==[] and src!=dest:
@@ -86,23 +86,20 @@ class Graph:
         trajet_possibles=[]
         source=src
         for neighbor in self.graph[src]:
-            if self.graph[neighbor[0]][0][0]!=source:
-                p=neighbor[1]
-                power=power-p
-                """self.graph[neighbor[0]].remove((src,neighbor[1],neighbor[2]))"""
-                print(neighbor)
-                
-                print(source)
-                if self.get_path_with_power(src, dest, power)!=None  and power>=0:
-                    trajet=self.get_path_with_power(src, dest, power)
-                for i in range (len(trajet)):
-                    trajet_possibles.append([source]+trajet[i])
-                    print(trajet_possibles)
-            source=src
-            src= neighbor[0]
+            p=neighbor[1]
+            power=power-p
+            print(neighbor[0])
+            print(self.graph[neighbor[0]])
+            print((src,neighbor[1],neighbor[2]))
+            self.graph[neighbor[0]].remove((src,neighbor[1],neighbor[2]))
+            if self.get_path_with_power(neighbor[0], dest, power)!=None  and power>=0:
+                trajet=self.get_path_with_power(neighbor[0], dest, power)
+            for i in range (len(trajet)):
+                trajet_possibles.append([src]+trajet[i])
+                print(trajet_possibles)
         return trajet_possibles
 
-       """La fonction explorer permet de récupérer la composante de graphe associée au noeud fourni en parametre"""
+    """La fonction explorer permet de récupérer la composante de graphe associée au noeud fourni en parametre"""
     def explorer(self,node,compenent=[]):
         compenent.append(node)
         for neighbor in self.graph[node]:
