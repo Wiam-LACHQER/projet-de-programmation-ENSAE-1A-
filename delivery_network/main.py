@@ -14,4 +14,4 @@ print(g) # affichage du graphe
 
 print(g.connected_components_set())
 
-print(g.get_path_with_power(4,7,4))
+print(g.get_path_with_power(4,6,4))
