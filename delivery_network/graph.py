@@ -1,4 +1,5 @@
-import numpy
+
+import graphviz as gv
 class Graph:
     """
     A class representing graphs as adjacency lists and implementing various algorithms on the graphs. Graphs in the class are not oriented. 
@@ -77,43 +78,57 @@ class Graph:
               self.graph[node1]+=[(node2,power_min,dist)]
               self.graph[node2]+=[(node1,power_min,dist)] 
         return(self.graph)
+     
+    """def trajets(self,src,dest,power):
+        for compenent in self.connected_components():
+            if src in compenent:
+                if dest not in compenent:
+                    return None        
+        if src==dest:
+            return [[src]]           
+        trajets_possibles=[]
+        for neighbor in self.graph[src]:
+            p=neighbor[1]
+            power=power-p
+            print(power)
+            print(neighbor[0])
+            print(self.graph[neighbor[0]])
+            print((src,neighbor[1],neighbor[2]))
+            if (src,neighbor[1],neighbor[2]) in self.graph[neighbor[0]]:
+                self.graph[neighbor[0]].remove((src,neighbor[1],neighbor[2]))           
+            trajet=self.trajets(neighbor[0], dest, power)
+            if type(trajet) != "NoneType":              
+                for t in trajet:
+                    trajets_possibles.append([src]+t)
+                    print(trajets_possibles)
+        return trajets_possibles"""
+
     
-    def trajets (self,src,dest,power):
+    def get_path_with_power(self, src, dest, power, compenent=[]):
         for compenent in self.connected_components():
             if src in compenent:
                 if dest not in compenent:
                     return None
         if src==dest:
-            return [[src]]
-        elif (self.graph[src]==[] and src!=dest) or power<=0:
-            return None
-        trajets_possibles=[]
-        for i in range(len(self.graph[src])):
-            neighbor=self.graph[src][i]
-            p=neighbor[1]
-            power=power-p
-            """print(power)
-            print(neighbor[0])
-            print(self.graph[neighbor[0]])
-            print((src,neighbor[1],neighbor[2]))"""
-            if (src,neighbor[1],neighbor[2]) in self.graph[neighbor[0]]:
-                self.graph[neighbor[0]].remove((src,neighbor[1],neighbor[2]))           
-            if self.trajets(neighbor[0], dest, power)!=None:
-                trajet=self.trajets(neighbor[0], dest, power)
-                for i in range (len(trajet)):
-                    trajets_possibles.append([src]+trajet[i])
-                    """print(trajets_possibles)"""
-        return trajets_possibles
-    
-    def get_path_with_power(self, src, dest, power):
-        if self.trajets(src,dest,power)==None or self.trajets(src,dest,power)==[]:
-            print("Ce trajet est impossible")
-        else:
-            print ("Le trajet", (self.trajets(src,dest,power))[0],"est possible")
+            return [src]   
+        if power<0:
+            return None       
+        compenent.append(src)
+        if dest in compenent:
+            compenent.remove(dest)
+        for neighbor in self.graph[src]:
+            if neighbor[0] not in compenent:
+                power-=neighbor[1]
+                compenent.append(neighbor[0])
+                trajet=self.get_path_with_power(neighbor[0],dest,power,compenent)
+                if trajet!= None and power>=0:
+                    trajet=[src]+trajet
+                    return trajet
+                else:
+                    power+=neighbor[1]
 
-    
+
     """La fonction explorer permet de récupérer la composante de graphe associée au noeud fourni en parametre"""
-    
     def explorer(self,node,compenent=[]):
         compenent.append(node)
         for neighbor in self.graph[node]:
@@ -121,6 +136,7 @@ class Graph:
                 compenent=self.explorer(neighbor[0],compenent)
         return compenent
     
+   
     """Cette fonction permet de récupérer une liste de listes, chacune représente une composante du graphe"""
     def connected_components(self):
         nodes1=self.nodes
@@ -144,11 +160,29 @@ class Graph:
         """
         return set(map(frozenset,self.connected_components()))
     
+    def explore_with_power(self,node,compenent=[],power=0):
+        compenent.append(node)       
+        for neighbor in self.graph[node]:
+            if neighbor[0] not in compenent:
+                (compenent,power)=self.explore_with_power(neighbor[0],compenent,power+neighbor[1])
+        return (compenent,power)
+    
+    
     def min_power(self, src, dest):
         """
         Should return path, min_power. 
         """
-        raise NotImplementedError
+        power_max=self.explore_with_power(src)[1]
+        power_min=0
+        while power_max > 1+power_min:
+            power=(power_max+power_min)//2      
+            condition=self.get_path_with_power(src,dest,power,[])
+            if condition==None:
+                power_min=power
+            else:
+                power_max=power   
+        path=self.get_path_with_power(src,dest,power_max)
+        return (path,power_max)
 
 
 def graph_from_file(filename):
@@ -180,26 +214,49 @@ def graph_from_file(filename):
     """Entiers est une liste de listes des entiers de chaque ligne"""
     Entiers=[]
     for elem in Lignes: 
-        T = elem.split(" ")
-        Z = [int(i) for i in T]
-        Entiers.append(Z)
+        if elem !="":
+            T = elem.split(" ")
+            """Z = [float(i) for i in T]"""
+            Entiers.append(T)
 
-    nb_nodes = Entiers[0][0]
-    nb_edges = Entiers[0][1]
-    nodes=[i for i in range(1,nb_nodes+1)]
+    nb_nodes = int(Entiers[0][0])
+    """nb_edges = Entiers[0][1]"""    
     for i in range(1,len(Entiers)):
-        node1=Entiers[i][0]
-        node2=Entiers[i][1]
-        power_min=Entiers[i][2]
-        print(Entiers[i])
+        node1=int(Entiers[i][0])
+        node2=int(Entiers[i][1])
+        power_min=float(Entiers[i][2])
+        """print(Entiers[i])"""
         graph.add_edge(node1, node2, power_min, dist=1)
         if len(Entiers[i])==4:
-            dist=Entiers[i][3]
+            dist=float(Entiers[i][3])
             graph.add_edge(node1, node2, power_min, dist)
     """Probleme des points isolés, ils ne sont pas affichés ici!!!"""
-    for j in nodes:
+    graph.nodes=[i for i in range(1,nb_nodes+1)]
+    for j in graph.nodes:
         if j not in graph.graph.keys():
             graph.graph[j]=[]
 
     fichier.close()
     return graph
+
+
+
+
+def representation_graph(filename,datapath,src,dest,power):
+    g=graph_from_file(datapath+filename)
+    dot = gv.Graph(filename,format='png')
+    keys=g.graph.keys()
+    edges=[]
+    path=g.get_path_with_power(src, dest, power,[])
+    for key in keys:
+        if key in path:
+            dot.node(str(key), color= "red", style= 'filled')
+        else:
+            dot.node(str(key))
+        neighbors=g.graph[key]
+        for neighbor in neighbors:
+            if (str(neighbor[0]),str(key)) not in edges:
+                dot.edge(str(key), str(neighbor[0]))
+                edges.append((str(key), str(neighbor[0])))
+    print(dot.source)
+    dot.view()
