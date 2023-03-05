@@ -104,7 +104,23 @@ class Graph:
         return trajets_possibles"""
 
     
-    def get_path_with_power(self, src, dest, power, compenent=[]):
+    def get_path_with_power(self, src, dest, power, visited=[]):
+        """Cette fonction est récursive
+        
+        Parameters:
+        ----------
+        src: (source) début du chemin
+        dest:(destination) fin du chemin
+        power: puissance du camion, elle détermine si il peut faire le trajet ou non
+        visited: liste des sommets visités dans un chemin donné
+        
+        idée:
+        -----
+        Si src et dest ne sont pas dans la même composante connectée, ou si power<0: le trajet est infaisable.
+        On visite un voisin de source, on le marque visité, puis on cherche à atteindre la destination à partir de ce voisin
+        tout en mettant à jour la valeur de power, si c est impossible (power insuffisante ou trajet impossible sans passer 
+        par la source), on passe à un autre voisin de source.
+        """
         for compenent in self.connected_components():
             if src in compenent:
                 if dest not in compenent:
@@ -112,24 +128,24 @@ class Graph:
         if src==dest:
             return [src]   
         if power<0:
-            return None       
-        compenent.append(src)
-        if dest in compenent:
-            compenent.remove(dest)
+            return None               
+        
+        visited.append(src)
+        if dest in visited:
+            visited.remove(dest)
         for neighbor in self.graph[src]:
-            if neighbor[0] not in compenent:
+            if neighbor[0] not in visited:
                 power-=neighbor[1]
-                compenent.append(neighbor[0])
-                trajet=self.get_path_with_power(neighbor[0],dest,power,compenent)
+                trajet=self.get_path_with_power(neighbor[0],dest,power,visited)
                 if trajet!= None and power>=0:
                     trajet=[src]+trajet
                     return trajet
                 else:
                     power+=neighbor[1]
 
-
-    """La fonction explorer permet de récupérer la composante de graphe associée au noeud fourni en parametre"""
+    
     def explorer(self,node,compenent=[]):
+        """La fonction explorer permet de récupérer la composante de graphe associée au noeud fourni en parametre"""
         compenent.append(node)
         for neighbor in self.graph[node]:
             if neighbor[0] not in compenent:
@@ -137,18 +153,15 @@ class Graph:
         return compenent
     
    
-    """Cette fonction permet de récupérer une liste de listes, chacune représente une composante du graphe"""
+
     def connected_components(self):
+        """Cette fonction permet de récupérer une liste de listes, chacune représente une composante du graphe"""
         nodes1=self.nodes
         compenents=[]
         while nodes1!=[]:
             compenent=self.explorer(nodes1[0],[])
-            """print(compenent) """
-            """print sert seulement à visualiser les listes intermédiaires"""
             for elem in compenent:
                 nodes1.remove(elem) 
-            """print(nodes1) """
-            """print sert seulement à visualiser les listes intermédiaires"""
             compenents.append(compenent)
         return compenents
 
@@ -160,7 +173,9 @@ class Graph:
         """
         return set(map(frozenset,self.connected_components()))
     
+   
     def explore_with_power(self,node,compenent=[],power=0):
+        """cette fonction fait un parcours en profondeur en sommant les puissances des chemins"""
         compenent.append(node)       
         for neighbor in self.graph[node]:
             if neighbor[0] not in compenent:
@@ -256,5 +271,4 @@ def representation_graph(filename,datapath,src,dest,power):
             if (str(neighbor[0]),str(key)) not in edges:
                 dot.edge(str(key), str(neighbor[0]),label=str(neighbor[1]))
                 edges.append((str(key), str(neighbor[0])))
-    print(dot.source)
     dot.view()
