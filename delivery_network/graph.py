@@ -240,8 +240,6 @@ def graph_from_file(filename):
     return graph
 
 
-
-
 def representation_graph(filename,datapath,src,dest,power):
     g=graph_from_file(datapath+filename)
     dot = gv.Graph(filename,format='png')
@@ -256,7 +254,7 @@ def representation_graph(filename,datapath,src,dest,power):
         neighbors=g.graph[key]
         for neighbor in neighbors:
             if (str(neighbor[0]),str(key)) not in edges:
-                dot.edge(str(key), str(neighbor[0]))
+                dot.edge(str(key), str(neighbor[0]),label=str(neighbor[1]))
                 edges.append((str(key), str(neighbor[0])))
     print(dot.source)
     dot.view()
