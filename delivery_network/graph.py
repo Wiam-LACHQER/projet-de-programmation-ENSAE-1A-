@@ -131,8 +131,8 @@ class Graph:
             return None               
         
         visited.append(src)
-        if dest in visited:
-            visited.remove(dest)
+        """if dest in visited:
+            visited.remove(dest)"""
         for neighbor in self.graph[src]:
             if neighbor[0] not in visited:
                 power-=neighbor[1]
@@ -142,6 +142,7 @@ class Graph:
                     return trajet
                 else:
                     power+=neighbor[1]
+                    visited=[src,neighbor(0)]
 
     
     def explorer(self,node,compenent=[]):
