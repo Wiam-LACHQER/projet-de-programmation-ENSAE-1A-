@@ -304,3 +304,29 @@ def time_counter(number,filename):
     mean=(t1_stop-t1_start)/number
     lignes=open_route(filename)[2]
     return(mean*lignes)
+
+
+class union_find:
+    def __init__(self):
+       self.parent={}
+       self.rang=0
+    def MakeSet(self,x):
+       self.parent[x]=x
+    def Union(self,x,y):
+        xRacine=self.Find(x)
+        yRacine=self.Find(y)
+        if xRacine!=yRacine:
+            if xRacine.rang<yRacine.rang:
+                xRacine.parent=yRacine
+            else:   
+                yRacine.parent=xRacine
+            if xRacine.rang==yRacine.rang:
+                xRacine.rang = xRacine.rang + 1
+    def Find(self,x):
+        if self.parent[x]!=x:
+            self.parent[x]=self.Find(self.parent[x])
+        return(self.parent[x])
+
+        
+
+
