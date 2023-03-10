@@ -1,0 +1,20 @@
+graph "network.04.in" {
+	3 [color=red style=filled]
+	3 -- 2 [label=4.0]
+	3 -- 2 [label=4.0]
+	3 -- 4 [label=4.0]
+	3 -- 4 [label=4.0]
+	2 [color=red style=filled]
+	2 -- 1 [label=4.0]
+	2 -- 1 [label=4.0]
+	4 [color=red style=filled]
+	4 -- 1 [label=11.0]
+	4 -- 1 [label=11.0]
+	1
+	5
+	6
+	7
+	8
+	9
+	10
+}

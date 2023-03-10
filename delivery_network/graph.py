@@ -121,6 +121,7 @@ class Graph:
         tout en mettant à jour la valeur de power, si c est impossible (power insuffisante ou trajet impossible sans passer 
         par la source), on passe à un autre voisin de source.
         """
+        """La complexité est O(nb-nodes)"""
         for compenent in self.connected_components():
             if src in compenent:
                 if dest not in compenent:
@@ -128,8 +129,7 @@ class Graph:
         if src==dest:
             return [src]   
         if power<0:
-            return None               
-        
+            return None                      
         visited.append(src)
         if dest in visited:
             visited.remove(dest)
@@ -142,6 +142,7 @@ class Graph:
                     return trajet
                 else:
                     power+=neighbor[1]
+                    visited=[src,neighbor(0)]
 
     
     def explorer(self,node,compenent=[]):
@@ -233,7 +234,6 @@ def graph_from_file(filename):
             T = elem.split(" ")
             """Z = [float(i) for i in T]"""
             Entiers.append(T)
-
     nb_nodes = int(Entiers[0][0])
     """nb_edges = Entiers[0][1]"""    
     for i in range(1,len(Entiers)):
@@ -241,11 +241,10 @@ def graph_from_file(filename):
         node2=int(Entiers[i][1])
         power_min=float(Entiers[i][2])
         """print(Entiers[i])"""
-        dist = 1
+        graph.add_edge(node1, node2, power_min, dist=1)
         if len(Entiers[i])==4:
             dist=float(Entiers[i][3])
-        graph.add_edge(node1, node2, power_min, dist)
-        
+            graph.add_edge(node1, node2, power_min, dist)
     """Probleme des points isolés, ils ne sont pas affichés ici!!!"""
     graph.nodes=[i for i in range(1,nb_nodes+1)]
     for j in graph.nodes:
@@ -273,4 +272,3 @@ def representation_graph(filename,datapath,src,dest,power):
                 dot.edge(str(key), str(neighbor[0]),label=str(neighbor[1]))
                 edges.append((str(key), str(neighbor[0])))
     dot.view()
-

@@ -20,7 +20,5 @@ print(g.get_path_with_power(2,4,8))
 
 representation_graph(file_name,data_path,2,4,11)
 print(g.get_path_with_power(2,4,14))
-
-
 """print(g.min_power(2,4))"""
 """g.explore_with_power(2)"""
