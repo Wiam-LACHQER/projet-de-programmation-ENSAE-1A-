@@ -280,7 +280,7 @@ def open_route(filename):
     route = open (filename, "r")
     f=route.read()
     Lignes=f.split("\n")
-    for i in range(1,): 
+    for i in range(1,int(Lignes[0])+1): 
         if Lignes[i] !="":
             trajet = Lignes[i].split(" ")
             trajets.append(trajet)
