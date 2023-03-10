@@ -241,10 +241,10 @@ def graph_from_file(filename):
         node2=int(Entiers[i][1])
         power_min=float(Entiers[i][2])
         """print(Entiers[i])"""
-        graph.add_edge(node1, node2, power_min, dist=1)
+        dist=1
         if len(Entiers[i])==4:
             dist=float(Entiers[i][3])
-            graph.add_edge(node1, node2, power_min, dist)
+        graph.add_edge(node1, node2, power_min, dist)
     """Probleme des points isolés, ils ne sont pas affichés ici!!!"""
     graph.nodes=[i for i in range(1,nb_nodes+1)]
     for j in graph.nodes:
@@ -272,3 +272,14 @@ def representation_graph(filename,datapath,src,dest,power):
                 dot.edge(str(key), str(neighbor[0]),label=str(neighbor[1]))
                 edges.append((str(key), str(neighbor[0])))
     dot.view()
+ 
+def open_route(filename):
+    trajets=[]
+    route = open (filename, "r")
+    f=route.read()
+    Lignes=f.split("\n")
+    for i in range(1,int(Lignes[0])+1): 
+        if Lignes[i] !="":
+            trajet = Lignes[i].split(" ")
+            trajets.append(trajet)
+    return trajets 
