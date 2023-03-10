@@ -326,6 +326,31 @@ class union_find:
         if self.parent[x]!=x:
             self.parent[x]=self.Find(self.parent[x])
         return(self.parent[x])
+    
+
+def edges(g):
+    edges=[]
+    keys=g.graph.keys()
+    for key in keys:
+        neighbors=g.graph[key]
+        for neighbor in neighbors:
+            if (neighbor[0],key,neighbor[1]) not in edges:
+                edges.append((key, neighbor[0],neighbor[1]))
+    return edges
+
+def kruskal(g):
+    mst=Graph([])
+    sommets=g.nodes()  
+    uf = UnionFind(g.nb_nodes)
+    edges1 = edges(g)
+    edges2 = sorted(edges1, key=lambda x: x[2])
+    
+    for edge in edges:
+        u, v, w = edge
+        if uf.find(u) != uf.find(v):
+            uf.union(u, v)
+            mst.append(edge)
+    return mst
 
         
 
