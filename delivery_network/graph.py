@@ -142,7 +142,7 @@ class Graph:
                     return trajet
                 else:
                     power+=neighbor[1]
-                    visited=[src,neighbor(0)]
+                    
 
     
     def explorer(self,node,compenent=[]):
@@ -281,5 +281,10 @@ def open_route(filename):
     for i in range(1,int(Lignes[0])+1): 
         if Lignes[i] !="":
             trajet = Lignes[i].split(" ")
+            trajet[0]=int(trajet[0])
+            trajet[1]=int(trajet[1])
+            trajet[2]=float(trajet[2])
             trajets.append(trajet)
-    return trajets 
+    L=filename.split(".")
+    numero=int(L[1])
+    return (trajets,numero) 
