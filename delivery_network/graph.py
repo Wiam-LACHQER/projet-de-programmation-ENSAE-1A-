@@ -1,4 +1,4 @@
-
+from time import perf_counter
 import graphviz as gv
 class Graph:
     """
@@ -188,7 +188,7 @@ class Graph:
         """
         Should return path, min_power. 
         """
-        power_max=self.explore_with_power(src)[1]
+        power_max=self.explore_with_power(src,[],0)[1]
         power_min=0
         while power_max > 1+power_min:
             power=(power_max+power_min)//2      
@@ -197,7 +197,7 @@ class Graph:
                 power_min=power
             else:
                 power_max=power   
-        path=self.get_path_with_power(src,dest,power_max)
+        path=self.get_path_with_power(src,dest,power_max,[])
         return (path,power_max)
 
 
@@ -286,5 +286,21 @@ def open_route(filename):
             trajet[2]=float(trajet[2])
             trajets.append(trajet)
     L=filename.split(".")
-    numero=int(L[1])
-    return (trajets,numero) 
+    numero=L[1]
+    return (trajets,numero,int(Lignes[0]))
+
+
+def time_counter(number,filename):
+    numero=open_route(filename)[1]
+    filenamenet="input/network."+numero+".in"
+    g=graph_from_file(filenamenet)
+    trajets=open_route(filename)[0]
+    t1_start = perf_counter()
+    for i in range (number):
+        src=trajets[i][0]
+        dest=trajets[i][1]
+        print(g.min_power(src, dest))
+    t1_stop = perf_counter()
+    mean=(t1_stop-t1_start)/number
+    lignes=open_route(filename)[2]
+    return(mean*lignes)

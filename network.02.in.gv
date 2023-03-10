@@ -1,8 +1,8 @@
 graph "network.02.in" {
-	2 [color=red style=filled]
+	2
 	2 -- 1 [label=11.0]
 	2 -- 3 [label=4.0]
-	1
+	1 [color=red style=filled]
 	1 -- 4 [label=4.0]
 	3 [color=red style=filled]
 	3 -- 4 [label=4.0]
