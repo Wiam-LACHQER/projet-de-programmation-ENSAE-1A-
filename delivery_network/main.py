@@ -3,8 +3,8 @@ from graph import Graph, graph_from_file,representation_graph,open_route,time_co
 
 
 data_path = "input/"
-file_name = "network.3.in"
-file_name2= "routes.3.in"
+file_name = "network.1.in"
+file_name2= "routes.1.in"
 
 t1_start= perf_counter()
 g = graph_from_file(data_path + file_name)

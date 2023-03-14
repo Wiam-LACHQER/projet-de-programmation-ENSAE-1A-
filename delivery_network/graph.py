@@ -355,7 +355,7 @@ def kruskal(g=Graph([])):
     return tree
 
 def parents(tree,racine):
-    """Cette fonction définit les relations pere/fils ainsi que les ranga des noeuds dans un arbre"""
+    """Cette fonction définit les relations pere/fils ainsi que les rangs des noeuds dans un arbre, un parcours en largeur"""
     parent={}
     rang={}
     parent[racine]=(racine,0)
@@ -406,6 +406,7 @@ def time_counter2(number,filename,tree=[]):
     nombre de lignes, et affiche le résultat.
     """
     trajets=open_route(filename)[0]
+    myFile = open(filename[6:15]+"out", "w")
     
     t0_start = perf_counter()
     par,rang=parents(tree,3)
@@ -416,9 +417,9 @@ def time_counter2(number,filename,tree=[]):
     for i in range (number):
         src=trajets[i][0]
         dest=trajets[i][1]
-        print(min_power2(src,dest,par,rang))
+        myFile.write(str(min_power2(src,dest,par,rang)[1])+"\n")
     t1_stop = perf_counter()
-    
+    myFile.close()
     mean=(t1_stop-t1_start)/number
     lignes=open_route(filename)[2]
     return(mean*lignes)
