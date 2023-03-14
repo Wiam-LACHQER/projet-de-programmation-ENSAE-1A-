@@ -362,6 +362,7 @@ def kruskal(g=Graph([])):
     return tree
 
 def parents(tree,racine):
+    """Cette fonction définit les relations pere/fils ainsi que les ranga des noeuds dans un arbre"""
     parent={}
     rang={}
     parent[racine]=(racine,0)
@@ -404,46 +405,27 @@ def min_power2(tree,src,dest,parent,rang):
         if power<power1 or power<power0:
             power=max(power1,power0)      
     return (path0+[src]+path1,power)  
-    """  visited.append(src)
-    if src==dest:
-        return([src],0)
-    neighbors=tree.graph[src]
-    if len(neighbors)==1 and neighbors[0][0] in visited and neighbors[0][0]!=dest:
-        return None
-    for neighbor in neighbors:      
-        if neighbor[0] not in visited:
-            if neighbor[1]>power:                    
-                    power=neighbor[1]
-                    print(power)
-            A=min_power2(tree,neighbor[0],dest,visited,power)
-            if A!=None:
-                path=[src]+A[0]                
-                return(path,power)"""
-    """while dest not in visited:
-        neighbors=tree.graph[src]
-        for neighbor in neighbors:
-            if neighbor[0] not in visited:
-                visited.append(neighbor[0])
-                visited.append(src)
-                src=neighbor[0]
-                power
-        if len(neighbors)==1 and neighbors[0][0] in visited and neighbors[0][0]!=dest:
-            power=
-        for neighbor in neighbors:      
-        if neighbor[0] not in visited:"""
+
 def time_counter2(number,filename,tree=[]):
+    """Cette fonction extrait les informations du fichier routes.x.in, elle définit les relations pere/fils ainsi que les
+    rangs des noeuds par la fonction parents, elle affiche le temps nécessaire pour exécuter parents.
+    Enfin, elle exécute min-power2 pour les number premieres lignes de routes.x.in, calcule la moyenne et la multiplie par le 
+    nombre de lignes, et affiche le résultat.
+    """
     trajets=open_route(filename)[0]
     
     t0_start = perf_counter()
     par,rang=parents(tree,3)
     t0_stop = perf_counter()   
     print(t0_stop-t0_start)
+    
     t1_start = perf_counter()    
     for i in range (number):
         src=trajets[i][0]
         dest=trajets[i][1]
         print(min_power2(tree,src,dest,par,rang))
     t1_stop = perf_counter()
+    
     mean=(t1_stop-t1_start)/number
     lignes=open_route(filename)[2]
     return(mean*lignes)
