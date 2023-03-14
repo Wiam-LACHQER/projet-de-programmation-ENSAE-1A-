@@ -126,23 +126,23 @@ class Graph:
             if src in compenent:
                 if dest not in compenent:
                     return None
-        if src==dest and power>=0:
+        if src==dest:
             return [src]           
         visited.append(src)
         for neighbor in self.graph[src]:
-            power0=power
+            # power0=power
             if neighbor[0] not in visited:
-                power-=neighbor[1]
-                if power>=0:   
+                # power-=neighbor[1]
+                if power>=neighbor[1]:   
                     trajet=self.get_path_with_power(neighbor[0],dest,power,visited)
                     if trajet!=None:
                         trajet=[src]+trajet
                         return trajet
                     else:
                         visited.remove(neighbor[0])
-                else:
-                    power+=neighbor[1]
-            power=power0
+                # else:
+                    # power+=neighbor[1]
+            # power=power0
   
 
     
@@ -181,7 +181,7 @@ class Graph:
         compenent.append(node)       
         for neighbor in self.graph[node]:
             if neighbor[0] not in compenent:
-                (compenent,power)=self.explore_with_power(neighbor[0],compenent,power+neighbor[1])
+                (compenent,power)=self.explore_with_power(neighbor[0],compenent,max(power,neighbor[1]))
         return (compenent,power)
     
     
@@ -322,6 +322,14 @@ class union_find:
     def __init__(self):
         self.parent={}
         self.rang={}
+    def __str__(self):
+        """Prints the graph as a list of neighbors for each node (one per line)"""       
+        output = " "
+        for source, destination in self.parent.items():
+            output += f"{source}-->{destination}\n"
+        for elem, rang in self.rang.items():
+            output += f"{elem}-->{rang}\n"
+        return (output)
     def MakeSet(self,x):
        self.parent[x]=x
        self.rang[x]=0
@@ -344,8 +352,8 @@ def kruskal(g=Graph([])):
     tree=Graph([])
     edges_sort=sorted(g.edges(), key=lambda edge: edge[2])
     classes=union_find()
-    nodes=g.nodes
-    for node in nodes:
+    no=g.nodes
+    for node in no:
         classes.MakeSet(node)
     for edge in edges_sort:
         if classes.Find(edge[0])!=classes.Find(edge[1]):
@@ -353,8 +361,50 @@ def kruskal(g=Graph([])):
             classes.Union(edge[0],edge[1])
     return tree
 
-def min_power2(tree,src,dest,visited=[],power=0):
-    visited.append(src)
+def parents(tree,racine):
+    parent={}
+    rang={}
+    parent[racine]=(racine,0)
+    rang[racine]=0
+    visited=[]
+    file=[]
+    file.append(racine)
+    visited.append(racine)
+    while file!=[]:
+        s=file.pop(0)
+        neighbors=tree.graph[s]
+        for neighbor in neighbors:
+            if neighbor[0] not in visited:
+                parent[neighbor[0]]=(s,neighbor[1])
+                rang[neighbor[0]]=rang[s]+1
+                file.append(neighbor[0])
+                visited.append(neighbor[0])
+    return(parent,rang)
+
+def min_power2(tree,src,dest,parent,rang):
+    path0=[]
+    path1=[]
+    power=0
+    while src!=dest :
+        p1=parent[dest]
+        p0=parent[src]
+        if rang[src]>rang[dest]:
+            path0.append(src)
+            src=p0[0]
+        elif rang[src]<rang[dest]:
+            path1=[dest]+path1
+            dest=p1[0]
+        else:           
+            path0.append(src)
+            path1=[dest]+path1
+            dest=p1[0]
+            src=p0[0]
+        power0=p0[1]
+        power1=p1[1]       
+        if power<power1 or power<power0:
+            power=max(power1,power0)      
+    return (path0+[src]+path1,power)  
+    """  visited.append(src)
     if src==dest:
         return([src],0)
     neighbors=tree.graph[src]
@@ -362,11 +412,13 @@ def min_power2(tree,src,dest,visited=[],power=0):
         return None
     for neighbor in neighbors:      
         if neighbor[0] not in visited:
-            A=min_power2(tree,neighbor[0],dest,visited,power,)
+            if neighbor[1]>power:                    
+                    power=neighbor[1]
+                    print(power)
+            A=min_power2(tree,neighbor[0],dest,visited,power)
             if A!=None:
-                path=[src]+A[0]
-                power=A[1]+neighbor[1]
-                return(path,power)
+                path=[src]+A[0]                
+                return(path,power)"""
     """while dest not in visited:
         neighbors=tree.graph[src]
         for neighbor in neighbors:
@@ -379,3 +431,21 @@ def min_power2(tree,src,dest,visited=[],power=0):
             power=
         for neighbor in neighbors:      
         if neighbor[0] not in visited:"""
+def time_counter2(number,filename,tree=[]):
+    trajets=open_route(filename)[0]
+    
+    t0_start = perf_counter()
+    par,rang=parents(tree,3)
+    t0_stop = perf_counter()   
+    print(t0_stop-t0_start)
+    t1_start = perf_counter()    
+    for i in range (number):
+        src=trajets[i][0]
+        dest=trajets[i][1]
+        print(min_power2(tree,src,dest,par,rang))
+    t1_stop = perf_counter()
+    mean=(t1_stop-t1_start)/number
+    lignes=open_route(filename)[2]
+    return(mean*lignes)
+
+
