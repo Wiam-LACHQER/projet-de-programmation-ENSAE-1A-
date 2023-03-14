@@ -3,8 +3,8 @@ from graph import Graph, graph_from_file,representation_graph,open_route,time_co
 
 
 data_path = "input/"
-file_name = "network.2.in"
-file_name2= "routes.2.in"
+file_name = "network.3.in"
+file_name2= "routes.3.in"
 
 t1_start= perf_counter()
 g = graph_from_file(data_path + file_name)
@@ -21,9 +21,9 @@ print(time_counter2(15,data_path+file_name2,tree))
 """ 
 Résultats obtenus
 
-Création du graphe:                                         400.0265255999984
-Création de l arbre couvrant minimal (kruskal):             1339.887115999998 
-définition des parents et des rangs:                        407.8878979000001
-le temps moyen pour trouver tous les trajets de routes.2:   999.9366666306742
+Création du graphe:                                         240.9951740999968
+Création de l arbre couvrant minimal (kruskal):             1005.7318303999928
+définition des parents et des rangs:                        342.6782616000128
+le temps moyen pour trouver tous les trajets de routes.3:   76.56333327759057
 """
-# les chemins trouvés et les puissances minimales sont également affichés dans le terminal
+# le fichier routes.3.out est également généré

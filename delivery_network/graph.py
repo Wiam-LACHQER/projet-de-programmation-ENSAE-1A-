@@ -78,31 +78,6 @@ class Graph:
               self.graph[node1]+=[(node2,power_min,dist)]
               self.graph[node2]+=[(node1,power_min,dist)] 
         return(self.graph)
-     
-    """def trajets(self,src,dest,power):
-        for compenent in self.connected_components():
-            if src in compenent:
-                if dest not in compenent:
-                    return None        
-        if src==dest:
-            return [[src]]           
-        trajets_possibles=[]
-        for neighbor in self.graph[src]:
-            p=neighbor[1]
-            power=power-p
-            print(power)
-            print(neighbor[0])
-            print(self.graph[neighbor[0]])
-            print((src,neighbor[1],neighbor[2]))
-            if (src,neighbor[1],neighbor[2]) in self.graph[neighbor[0]]:
-                self.graph[neighbor[0]].remove((src,neighbor[1],neighbor[2]))           
-            trajet=self.trajets(neighbor[0], dest, power)
-            if type(trajet) != "NoneType":              
-                for t in trajet:
-                    trajets_possibles.append([src]+t)
-                    print(trajets_possibles)
-        return trajets_possibles"""
-
     
     def get_path_with_power(self, src, dest, power, visited=[]):
         """Cette fonction est récursive
