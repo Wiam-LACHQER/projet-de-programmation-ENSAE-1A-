@@ -51,10 +51,10 @@ print(time_counter2(15,data_path+file_name2,tree))
 """
 Resultat routes2
 
-90.27095479999844
-499.4082939
-242.1338109999997
-23.310666632217664
+création du graphe   90.27095479999844
+kruskal  499.4082939    
+parents  242.1338109999997
+la boucle de min-power2(voir time-counter2)   23.310666632217664
 
 Resultat de routes3
 

@@ -130,9 +130,7 @@ class Graph:
             return [src]           
         visited.append(src)
         for neighbor in self.graph[src]:
-            # power0=power
             if neighbor[0] not in visited:
-                # power-=neighbor[1]
                 if power>=neighbor[1]:   
                     trajet=self.get_path_with_power(neighbor[0],dest,power,visited)
                     if trajet!=None:
@@ -140,9 +138,7 @@ class Graph:
                         return trajet
                     else:
                         visited.remove(neighbor[0])
-                # else:
-                    # power+=neighbor[1]
-            # power=power0
+
   
 
     
@@ -238,25 +234,22 @@ def graph_from_file(filename):
     graph=Graph([]) 
     """Lignes est la liste des lignes du fichier"""
     Lignes=f.split("\n")
-    """Entiers est une liste de listes des entiers de chaque ligne"""
+    """Entiers est une liste de listes des elements de chaque ligne"""
     Entiers=[]
     for elem in Lignes: 
         if elem !="":
             T = elem.split(" ")
-            """Z = [float(i) for i in T]"""
             Entiers.append(T)
-    nb_nodes = int(Entiers[0][0])
-    """nb_edges = Entiers[0][1]"""    
+    nb_nodes = int(Entiers[0][0])  
     for i in range(1,len(Entiers)):
         node1=int(Entiers[i][0])
         node2=int(Entiers[i][1])
         power_min=float(Entiers[i][2])
-        """print(Entiers[i])"""
         dist=1
         if len(Entiers[i])==4:
             dist=float(Entiers[i][3])
         graph.add_edge(node1, node2, power_min, dist)
-    """Probleme des points isolés, ils ne sont pas affichés ici!!!"""
+    """Probleme des points isolés, comme dans network.02.in"""
     graph.nodes=[i for i in range(1,nb_nodes+1)]
     for j in graph.nodes:
         if j not in graph.graph.keys():
@@ -382,7 +375,7 @@ def parents(tree,racine):
                 visited.append(neighbor[0])
     return(parent,rang)
 
-def min_power2(tree,src,dest,parent,rang):
+def min_power2(src,dest,parent,rang):
     path0=[]
     path1=[]
     power=0
@@ -423,7 +416,7 @@ def time_counter2(number,filename,tree=[]):
     for i in range (number):
         src=trajets[i][0]
         dest=trajets[i][1]
-        print(min_power2(tree,src,dest,par,rang))
+        print(min_power2(src,dest,par,rang))
     t1_stop = perf_counter()
     
     mean=(t1_stop-t1_start)/number
